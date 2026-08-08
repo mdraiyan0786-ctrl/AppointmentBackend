@@ -1,7 +1,9 @@
 package com.appointment.controller;
 import com.appointment.entity.Appointment;
 import com.appointment.service.AppointmentService;
+//import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
@@ -17,8 +19,9 @@ public class AppointmentController {
     }
 
     @PostMapping
-    public Appointment bookAppointment(@RequestBody Appointment appointment) {
-        return appointmentService.bookAppointment(appointment);
+    public Appointment bookAppointment(@RequestBody Appointment appointment, Authentication authentication) {
+        String email = authentication.getName();
+        return appointmentService.bookAppointment(appointment,email);
     }
 
     @GetMapping
