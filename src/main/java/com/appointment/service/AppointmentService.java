@@ -26,7 +26,7 @@ public class AppointmentService {
         this.doctorRepository = doctorRepository;
     }
 
-    public Appointment bookAppointment(Appointment appointment,String email) {
+    public Appointment bookAppointment(Appointment appointment,String email ) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -50,5 +50,11 @@ public class AppointmentService {
 
     public void cancelAppointment(Long id) {
         appointmentRepository.deleteById(id);
+    }
+
+    public List<Appointment> getMyAppointment(String email){
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(()->new RuntimeException("User not Found"));
+        return appointmentRepository.findByUserId(user.getId());
     }
 }

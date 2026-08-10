@@ -19,9 +19,16 @@ public class AppointmentController {
     }
 
     @PostMapping
-    public Appointment bookAppointment(@RequestBody Appointment appointment, Authentication authentication) {
+    public Appointment bookAppointment(
+            @RequestBody Appointment appointment,
+            Authentication authentication) {
+
         String email = authentication.getName();
-        return appointmentService.bookAppointment(appointment,email);
+
+        return appointmentService.bookAppointment(
+                appointment,
+                email
+        );
     }
 
     @GetMapping
@@ -29,14 +36,29 @@ public class AppointmentController {
         return appointmentService.getAllAppointments();
     }
 
+    // Get logged-in user's appointments
+    @GetMapping("/my")
+    public List<Appointment> getMyAppointments(
+            Authentication authentication) {
+
+        String email = authentication.getName();
+
+        return appointmentService.getMyAppointment(email);
+    }
+
     @GetMapping("/{id}")
-    public Appointment getAppointmentById(@PathVariable Long id) {
+    public Appointment getAppointmentById(
+            @PathVariable Long id) {
+
         return appointmentService.getAppointmentById(id);
     }
 
     @DeleteMapping("/{id}")
-    public String cancelAppointment(@PathVariable Long id) {
+    public String cancelAppointment(
+            @PathVariable Long id) {
+
         appointmentService.cancelAppointment(id);
+
         return "Appointment cancelled successfully";
     }
 }
