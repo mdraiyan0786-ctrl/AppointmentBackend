@@ -29,4 +29,19 @@ public class UserService {
     public void deleteUser(Long id) {
         userRepository.deleteById(id);
     }
+
+    public User updateProfile(
+            String email,
+            String name,
+            String phone) {
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new RuntimeException("User not found"));
+
+        user.setName(name);
+        user.setPhone(phone);
+
+        return userRepository.save(user);
+    }
 }

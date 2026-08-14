@@ -23,6 +23,9 @@ public class DoctorAvailability {
     @Column(nullable = false)
     private Integer maxPatients;
 
+    @Transient
+    private int remainingPatients;
+
     public DoctorAvailability() {
     }
 
@@ -78,5 +81,13 @@ public class DoctorAvailability {
 
     public void setMaxPatients(Integer maxPatients) {
         this.maxPatients = maxPatients;
+    }
+
+    public int getRemainingPatients() {
+        return remainingPatients;
+    }
+
+    public void setRemainingPatients(int remainingPatients) {
+        this.remainingPatients = remainingPatients;
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 
 import java.util.List;
 
+
 @RestController
 @RequestMapping("/api/users")
 @CrossOrigin(origins = "http://localhost:5173")
@@ -37,19 +38,8 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @GetMapping("/{id}")
-    public User getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
-    }
-
-    @DeleteMapping("/{id}")
-    public String deleteUser(@PathVariable Long id) {
-        userService.deleteUser(id);
-        return "User deleted successfully";
-    }
-
     // =========================
-    // PROFILE
+    // GET PROFILE
     // =========================
 
     @GetMapping("/profile")
@@ -72,5 +62,68 @@ public class UserController {
         );
 
         return ResponseEntity.ok(profile);
+    }
+
+    // =========================
+    // UPDATE PROFILE
+    // =========================
+
+    @PutMapping("/profile")
+    public ResponseEntity<ProfileResponse> updateProfile(
+            @RequestBody ProfileRequest request,
+            Authentication authentication) {
+
+        String email = authentication.getName();
+
+        User user = userService.updateProfile(
+                email,
+                request.name(),
+                request.phone()
+        );
+
+        ProfileResponse profile = new ProfileResponse(
+                user.getId(),
+                user.getName(),
+                user.getEmail(),
+                user.getPhone(),
+                user.getRole(),
+                user.getCreatedAt()
+        );
+
+        return ResponseEntity.ok(profile);
+    }
+
+    // =========================
+    // GET USER BY ID
+    // =========================
+
+    @GetMapping("/{id}")
+    public User getUserById(
+            @PathVariable Long id) {
+
+        return userService.getUserById(id);
+    }
+
+    // =========================
+    // DELETE USER
+    // =========================
+
+    @DeleteMapping("/{id}")
+    public String deleteUser(
+            @PathVariable Long id) {
+
+        userService.deleteUser(id);
+
+        return "User deleted successfully";
+    }
+
+    // =========================
+    // PROFILE REQUEST
+    // =========================
+
+    public record ProfileRequest(
+            String name,
+            String phone
+    ) {
     }
 }

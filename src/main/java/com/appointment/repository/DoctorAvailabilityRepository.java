@@ -11,13 +11,16 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface DoctorAvailabilityRepository extends JpaRepository<DoctorAvailability,Long> {
+public interface DoctorAvailabilityRepository
+        extends JpaRepository<DoctorAvailability, Long> {
+
     List<DoctorAvailability> findByDoctorIdAndAvailableDate(
             Long doctorId,
             LocalDate availableDate
     );
 
-    Optional<DoctorAvailability> findByDoctorAndAvailableDateAndAvailableTime(
+    Optional<DoctorAvailability>
+    findByDoctorAndAvailableDateAndAvailableTime(
             Doctor doctor,
             LocalDate availableDate,
             LocalTime availableTime

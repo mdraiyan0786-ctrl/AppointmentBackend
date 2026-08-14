@@ -8,11 +8,11 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-
 @RestController
 @RequestMapping("/api/availability")
 @CrossOrigin(origins = "http://localhost:5173")
 public class DoctorAvailabilityController {
+
     private final DoctorAvailabilityService availabilityService;
 
     public DoctorAvailabilityController(
@@ -40,7 +40,7 @@ public class DoctorAvailabilityController {
             @RequestParam LocalDate date) {
 
         return ResponseEntity.ok(
-                availabilityService.getDoctorAvailability(
+                availabilityService.getAvailabilityByDoctorAndDate(
                         doctorId,
                         date
                 )
