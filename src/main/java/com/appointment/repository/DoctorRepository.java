@@ -3,7 +3,13 @@ package com.appointment.repository;
 import com.appointment.entity.Doctor;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import javax.print.Doc;
+import java.util.Optional;
 
-public interface DoctorRepository extends JpaRepository<Doctor,Long> {
+public interface DoctorRepository extends JpaRepository<Doctor, Long> {
+
+    Optional<Doctor> findByEmail(String email);
+
+    boolean existsByEmail(String email);
+
+    boolean existsByPhone(String phone);
 }

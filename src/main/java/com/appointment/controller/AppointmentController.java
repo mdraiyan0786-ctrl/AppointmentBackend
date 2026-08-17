@@ -2,6 +2,7 @@ package com.appointment.controller;
 import com.appointment.entity.Appointment;
 import com.appointment.service.AppointmentService;
 //import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.security.core.Authentication;
 
@@ -60,5 +61,25 @@ public class AppointmentController {
         appointmentService.cancelAppointment(id);
 
         return "Appointment cancelled successfully";
+    }
+
+    @GetMapping("/doctor")
+    public ResponseEntity<List<Appointment>> getDoctorAppointments(
+            Authentication authentication) {
+
+        String email = authentication.getName();
+
+        return ResponseEntity.ok(
+                appointmentService.getDoctorAppointments(email)
+        );
+    }
+
+    @PutMapping("/{id}/complete")
+    public ResponseEntity<Appointment> completeAppointment(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                appointmentService.completeAppointment(id)
+        );
     }
 }

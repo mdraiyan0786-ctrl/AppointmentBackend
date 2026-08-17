@@ -1,20 +1,38 @@
 package com.appointment.entity;
 
 import jakarta.persistence.*;
-import lombok.*;
 
-@Table(name = "doctors")
-@Builder
 @Entity
+@Table(name = "doctors")
 public class Doctor {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // =========================
+    // PERSONAL DETAILS
+    // =========================
+
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false)
+    private String password;
+
+    @Column(nullable = false, unique = true)
+    private String phone;
+
+    // =========================
+    // PROFESSIONAL DETAILS
+    // =========================
+
     private String specialization;
+
+    private String degree;
 
     private String qualification;
 
@@ -26,25 +44,26 @@ public class Doctor {
 
     private String availableTime;
 
+    // =========================
+    // PROFILE DETAILS
+    // =========================
+
     private Double rating;
 
     private String imageUrl;
 
+
+    // =========================
+    // CONSTRUCTORS
+    // =========================
+
     public Doctor() {
     }
 
-    public Doctor(Long id, String name, String specialization, String qualification, Integer experience, Double consultationFee, String medicalStore, String availableTime, Double rating, String imageUrl) {
-        this.id = id;
-        this.name = name;
-        this.specialization = specialization;
-        this.qualification = qualification;
-        this.experience = experience;
-        this.consultationFee = consultationFee;
-        this.medicalStore = medicalStore;
-        this.availableTime = availableTime;
-        this.rating = rating;
-        this.imageUrl = imageUrl;
-    }
+
+    // =========================
+    // GETTERS AND SETTERS
+    // =========================
 
     public Long getId() {
         return id;
@@ -54,6 +73,7 @@ public class Doctor {
         this.id = id;
     }
 
+
     public String getName() {
         return name;
     }
@@ -61,6 +81,34 @@ public class Doctor {
     public void setName(String name) {
         this.name = name;
     }
+
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
 
     public String getSpecialization() {
         return specialization;
@@ -70,6 +118,16 @@ public class Doctor {
         this.specialization = specialization;
     }
 
+
+    public String getDegree() {
+        return degree;
+    }
+
+    public void setDegree(String degree) {
+        this.degree = degree;
+    }
+
+
     public String getQualification() {
         return qualification;
     }
@@ -77,6 +135,7 @@ public class Doctor {
     public void setQualification(String qualification) {
         this.qualification = qualification;
     }
+
 
     public Integer getExperience() {
         return experience;
@@ -86,6 +145,7 @@ public class Doctor {
         this.experience = experience;
     }
 
+
     public Double getConsultationFee() {
         return consultationFee;
     }
@@ -93,6 +153,7 @@ public class Doctor {
     public void setConsultationFee(Double consultationFee) {
         this.consultationFee = consultationFee;
     }
+
 
     public String getMedicalStore() {
         return medicalStore;
@@ -102,6 +163,7 @@ public class Doctor {
         this.medicalStore = medicalStore;
     }
 
+
     public String getAvailableTime() {
         return availableTime;
     }
@@ -110,6 +172,7 @@ public class Doctor {
         this.availableTime = availableTime;
     }
 
+
     public Double getRating() {
         return rating;
     }
@@ -117,6 +180,7 @@ public class Doctor {
     public void setRating(Double rating) {
         this.rating = rating;
     }
+
 
     public String getImageUrl() {
         return imageUrl;

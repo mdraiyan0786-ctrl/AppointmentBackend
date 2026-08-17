@@ -10,7 +10,6 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -55,9 +54,15 @@ public class SecurityConfig {
                                 "/**"
                         ).permitAll()
 
-                        // Login / Register
+                        // User Login / Register
                         .requestMatchers(
                                 "/api/auth/**"
+                        ).permitAll()
+
+                        // Doctor Registration / Login
+                        .requestMatchers(
+                                "/api/doctors/register",
+                                "/api/doctors/login"
                         ).permitAll()
 
                         // Doctors - public GET
@@ -72,7 +77,6 @@ public class SecurityConfig {
                         ).permitAll()
 
                         // Doctor availability
-                        // GET + POST + PUT + DELETE
                         .requestMatchers(
                                 "/api/availability/**"
                         ).permitAll()

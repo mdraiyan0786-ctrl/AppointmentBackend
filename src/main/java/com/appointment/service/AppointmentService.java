@@ -267,6 +267,17 @@ public class AppointmentService {
         }
     }
 
+    public List<Appointment> getDoctorAppointments(String email) {
+
+        Doctor doctor = doctorRepository.findByEmail(email)
+                .orElseThrow(() ->
+                        new RuntimeException("Doctor not found"));
+
+        return appointmentRepository.findByDoctorId(
+                doctor.getId()
+        );
+    }
+
     // ==========================================
     // RUN EVERY 60 SECONDS
     // ==========================================
@@ -275,5 +286,46 @@ public class AppointmentService {
     public void automaticallyCompleteAppointments() {
 
         updateCompletedAppointments();
+    }
+
+    public Appointment completeAppointment(Long id) {
+
+        Appointment appointment =
+                appointmentRepository.findById(id)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Appointment not found"
+                                )
+                        );
+
+        if ("CANCELLED".equals(appointment.getStatus())) {
+            throw new RuntimeException(
+                    "Cancelled appointment cannot be completed"
+            );
+        }
+
+        if ("COMPLETED".equals(appointment.getStatus())) {
+            throw new RuntimeException(
+                    "Appointment is already completed"
+            );
+        }
+
+        appointment.setStatus("COMPLETED");
+
+        Appointment savedAppointment =
+                appointmentRepository.save(appointment);
+
+        notificationService.createNotification(
+                appointment.getUser(),
+                "Your appointment with "
+                        + appointment.getDoctor().getName()
+                        + " on "
+                        + appointment.getAppointmentDate()
+                        + " at "
+                        + appointment.getAppointmentTime()
+                        + " has been completed."
+        );
+
+        return savedAppointment;
     }
 }

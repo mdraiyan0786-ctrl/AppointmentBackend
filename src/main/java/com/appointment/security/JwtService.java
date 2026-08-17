@@ -11,24 +11,49 @@ import java.util.Date;
 @Service
 public class JwtService {
 
-    // At least 32 bytes (256 bits) for HS256
     private static final String SECRET =
             "mysecretkeymysecretkeymysecretkeymysecretkey";
 
-    private final SecretKey key = Keys.hmacShaKeyFor(SECRET.getBytes());
+    private final SecretKey key =
+            Keys.hmacShaKeyFor(SECRET.getBytes());
 
-    // Generate JWT Token
+    // =========================
+    // GENERATE USER TOKEN
+    // =========================
+
     public String generateToken(String email) {
+
+        return generateToken(email, "USER");
+    }
+
+
+    // =========================
+    // GENERATE TOKEN WITH ROLE
+    // =========================
+
+    public String generateToken(
+            String email,
+            String role) {
 
         return Jwts.builder()
                 .subject(email)
+                .claim("role", role)
                 .issuedAt(new Date())
-                .expiration(new Date(System.currentTimeMillis() + 24 * 60 * 60 * 1000))
+                .expiration(
+                        new Date(
+                                System.currentTimeMillis()
+                                        + 24 * 60 * 60 * 1000
+                        )
+                )
                 .signWith(key)
                 .compact();
     }
 
-    // Extract Email from Token
+
+    // =========================
+    // EXTRACT EMAIL
+    // =========================
+
     public String extractEmail(String token) {
 
         Claims claims = Jwts.parser()
@@ -39,7 +64,32 @@ public class JwtService {
 
         return claims.getSubject();
     }
-    public boolean isTokenValid(String token, String email) {
+
+
+    // =========================
+    // EXTRACT ROLE
+    // =========================
+
+    public String extractRole(String token) {
+
+        Claims claims = Jwts.parser()
+                .verifyWith(key)
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+
+        return claims.get("role", String.class);
+    }
+
+
+    // =========================
+    // VALIDATE TOKEN
+    // =========================
+
+    public boolean isTokenValid(
+            String token,
+            String email) {
+
         return extractEmail(token).equals(email);
     }
 }
