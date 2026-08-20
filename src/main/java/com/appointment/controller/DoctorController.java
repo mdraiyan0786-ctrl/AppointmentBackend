@@ -175,4 +175,46 @@ public class DoctorController {
 
         return "Doctor deleted successfully";
     }
+
+    @PutMapping("/reset-password")
+    public ResponseEntity<?> resetDoctorPassword(
+            @RequestBody Map<String, String> request) {
+
+        try {
+
+            String email = request.get("email");
+            String newPassword = request.get("newPassword");
+
+            if (email == null || newPassword == null) {
+
+                return ResponseEntity
+                        .badRequest()
+                        .body(Map.of(
+                                "message",
+                                "Email and new password are required"
+                        ));
+            }
+
+            doctorService.resetPassword(
+                    email,
+                    newPassword
+            );
+
+            return ResponseEntity.ok(
+                    Map.of(
+                            "message",
+                            "Doctor password reset successfully"
+                    )
+            );
+
+        } catch (RuntimeException e) {
+
+            return ResponseEntity
+                    .badRequest()
+                    .body(Map.of(
+                            "message",
+                            e.getMessage()
+                    ));
+        }
+    }
 }

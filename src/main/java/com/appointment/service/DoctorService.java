@@ -75,4 +75,20 @@ public class DoctorService {
                 encodedPassword
         );
     }
+
+
+    public void resetPassword(String email, String newPassword) {
+
+        Doctor doctor =
+                doctorRepository.findByEmail(email)
+                        .orElseThrow(() ->
+                                new RuntimeException("Doctor not found")
+                        );
+
+        doctor.setPassword(
+                passwordEncoder.encode(newPassword)
+        );
+
+        doctorRepository.save(doctor);
+    }
 }

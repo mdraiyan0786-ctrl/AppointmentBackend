@@ -60,9 +60,11 @@ public class SecurityConfig {
                         ).permitAll()
 
                         // Doctor Registration / Login
+                        // Doctor Registration / Login / Password Reset
                         .requestMatchers(
                                 "/api/doctors/register",
-                                "/api/doctors/login"
+                                "/api/doctors/login",
+                                "/api/doctors/reset-password"
                         ).permitAll()
 
                         // Doctors - public GET
@@ -85,6 +87,12 @@ public class SecurityConfig {
                         .requestMatchers(
                                 HttpMethod.POST,
                                 "/api/users"
+                        ).permitAll()
+
+                        .requestMatchers(
+                                HttpMethod.POST,
+                                "/api/doctors/login",
+                                "/api/doctors/register"
                         ).permitAll()
 
                         // Everything else requires JWT
